@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".frontPageActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/profileButton"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:layout_alignParentRight="true"></Button>
+
+        <TextView
+            android:id="@+id/findNewFriendsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/findNewFriends"
+            android:textSize="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/profileButton"/>
+        <EditText
+            android:id="@+id/searchByUsername"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/findNewFriendsText"
+            android:layout_centerHorizontal="true"
+            android:hint="Search by username"/>
+        <Button
+            android:id="@+id/buttonSearch1"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_below="@+id/findNewFriendsText"
+            android:layout_toRightOf="@+id/searchByUsername"/>
+        <EditText
+            android:id="@+id/searchByLocation"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/searchByUsername"
+            android:layout_centerHorizontal="true"
+            android:hint="Search by username"/>
+        <Button
+            android:id="@+id/buttonSearch2"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/searchByUsername"
+            android:layout_toRightOf="@+id/searchByLocation"/>
+
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

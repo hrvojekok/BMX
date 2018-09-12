@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profileActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/profileIDText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:textSize="30dp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/pictureExplanationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:gravity="center"
+            android:hint="Tap on the camera icon below to choose your profile picture"
+            android:layout_below="@+id/profileIDText"
+            android:textSize="15dp"
+            android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/pictureExplanationText"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_camera_alt_black_24dp"/>
+        <TextView
+            android:layout_below="@+id/profilePicture"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/riderTextView"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your nickname"
+            android:layout_marginHorizontal="30dp"
+            android:id="@+id/personalInfo"
+            android:layout_below="@+id/riderTextView"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save"
+            android:id="@+id/saveButton"
+            android:layout_below="@+id/personalInfo"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorAccent"/>
+        <TextView
+            android:id="@+id/verifyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/saveButton"/>
+
+        <TextView
+            android:id="@+id/logOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click here to log out"
+            android:layout_below="@+id/verifyTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="30dp"/>
+        <Button
+            android:id="@+id/customize"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logOut"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorAccent"
+            android:text="Customize your profile"/>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

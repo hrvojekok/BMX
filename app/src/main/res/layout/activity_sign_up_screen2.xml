@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sign_up_screen2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_margin="10dp"
+            android:textSize="30dp"
+            android:id="@+id/textViewTellUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tell_us_more_about_yourself"/>
+        <TextView
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/textViewIam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_am_a"
+            android:layout_below="@+id/textViewTellUs"/>
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/textViewIam"
+            android:layout_margin="15dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTellUs" />
+
+
+
+        <TextView
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/textViewLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_like_riding"
+            android:layout_below="@+id/textViewIam"/>
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/textViewLike"
+            android:layout_margin="15dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewIam" />
+
+
+        <Button
+            android:id="@+id/nextButton2"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM"
+            android:background="@color/colorAccent"
+            android:layout_below="@+id/spinner2"/>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">BMX ride&amp;sleep</string>
+    <string name="email_id">Email</string>
+    <string name="loginPassword">Password</string>
+    <string name="tell_us_more_about_yourself">Tell us more about yourself...</string>
+    <string name="i_am_a">I am a: </string>
+    <string name="proffesional_rider">Proffesional rider</string>
+    <string name="intermediate_rider">Intermediate rider</string>
+    <string name="begginer_rider">Begginer rider</string>
+    <string name="i_like_riding">I like riding: </string>
+    <string name="street">Street</string>
+    <string name="park">Park</string>
+    <string name="flatland">Flatland</string>
+    <string name="next">NEXT</string>
+    <string name="done">DONE</string>
+    <string name="i_am_familiar_with_spots_in">I am familiar with spots in:</string>
+    <string name="i_live_in">I live in:</string>
+    <string name="dirt">Dirt</string>
+    <string name="profile">Profile</string>
+    <string name="nameLastName">Filip Žagar</string>
+    <string name="locationText">Otok, Hrvatska</string>
+    <string name="descriptionText">Hi, my name is Filip. I am from Otok. I ride street and I am familiar with spots in Otok, Privlaka and Vinkovci.</string>
+    <string name="findNewFriends">find new friends</string>
+    <string name="register">REGISTER</string>
+    <string name="please_enter_a_desired_email_and_password_to_register_or_proceed_to_sign_in">Please enter a desired email and password to register, or proceed to sign in</string>
+    <string name="log_in">LOG IN</string>
+    <string name="please_enter_your_email_and_password_to_log_in">Please enter your email and password to log in</string>
+    <string-array name="rider">
+        <item>Proffesional rider</item>
+        <item>Intermediate rider</item>
+        <item>Beginer rider</item>
+    </string-array>
+    <string-array name="riding">
+        <item>Street</item>
+        <item>Park</item>
+        <item>Dirt</item>
+        <item>Flatland</item>
+    </string-array>
+</resources>
