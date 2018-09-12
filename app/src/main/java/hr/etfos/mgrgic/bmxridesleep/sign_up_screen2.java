@@ -70,7 +70,6 @@ public class sign_up_screen2 extends AppCompatActivity {
                 intent.putExtra("spinnerValue2", spinnerValue2);
                 startActivity(intent);
                 finish();
-                //blabla proba
             }
         });
 
