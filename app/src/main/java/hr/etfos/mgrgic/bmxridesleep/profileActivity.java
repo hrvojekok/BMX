@@ -8,6 +8,7 @@ import android.media.MediaActionSound;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,12 +60,14 @@ public class profileActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     String profileImageUrl;
     FirebaseAuth firebaseAuth;
+    DatabaseReference firebaseDatabase;
+    StorageReference storageReference;
 /*    /////////////////////////
     StorageReference firebaseStorage;
     ////////////////////*/
     private static final int PICK_IMAGE = 100;
 
-
+String noviUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +81,19 @@ public class profileActivity extends AppCompatActivity {
         textView = findViewById(R.id.verifyTextView);
         textView1 = findViewById(R.id.logOut);
         textView2 = findViewById(R.id.riderTextView);
+
+
+        //////////////////////
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference("profilepictures");
+        storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + System.currentTimeMillis() + ".jpg");
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("urlurl", uri.toString());
+                noviUrl = uri.toString();
+            }
+        });
+//////////////////
 
      /*   ////////////////
         firebaseStorage = FirebaseStorage.getInstance().getReference();
@@ -127,31 +149,34 @@ public class profileActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+    }
 
     //loada u imageview dobro
     private void loadUserInfo() {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-        //String photoUrl = user.getPhotoUrl().toString();
+        //String photoUrl = userInfo.getPhotoUrl().toString();
+
 
         if (user != null) {
             Log.d("bla", user.getPhotoUrl().toString());
 
             if (user.getPhotoUrl() != null) {
-
-
+                //Picasso.get().load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg").into(imageView);
 
                 Glide.with(this)
+                        //.load(noviUrl)
+//                        .load(firebaseDatabase)
+                        //.load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg")
                         .load("https://firebasestorage.googleapis.com/v0/b/bmxrideandsleep.appspot.com/o/profilepictures%2F1536763546087.jpg?alt=media&token=25a85aea-cdd1-44d1-939f-e80e5e3d86bf")
-                        //.load(user.getPhotoUrl())
+                        //.load(userInfo.getPhotoUrl())
                         .into(imageView);
-                //Glide.with(this).load(user.getPhotoUrl()).placeholder(R.drawable.default_profile).dontAnimate().into(view);
-               /* imageView.setImageURI(Uri.parse(user.getPhotoUrl().toString()));
+                //Glide.with(this).load(userInfo.getPhotoUrl()).placeholder(R.drawable.default_profile).dontAnimate().into(view);
+               /* imageView.setImageURI(Uri.parse(userInfo.getPhotoUrl().toString()));
 
                 imageView.setImageURI(imageURI);
 */
-                //     Picasso.get().load(user.getPhotoUrl()).into(imageView);
+                //     Picasso.get().load(userInfo.getPhotoUrl()).into(imageView);
             }
             if (user.getDisplayName() != null) {
                 editText.setText(user.getDisplayName());
@@ -178,6 +203,7 @@ public class profileActivity extends AppCompatActivity {
         }
 
     }
+
 
     //problem
     private void saveInfo() {
