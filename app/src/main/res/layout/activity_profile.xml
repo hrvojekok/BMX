@@ -83,6 +83,15 @@
             android:layout_centerHorizontal="true"
             android:background="@color/colorAccent"
             android:text="Customize your profile"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Set my location"
+            android:background="@color/colorAccent"
+            android:id="@+id/maps"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/customize"/>
     </RelativeLayout>
 
 

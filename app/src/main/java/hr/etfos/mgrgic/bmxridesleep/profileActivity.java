@@ -3,9 +3,11 @@ package hr.etfos.mgrgic.bmxridesleep;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaActionSound;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,12 +64,18 @@ public class profileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference firebaseDatabase;
     StorageReference storageReference;
-/*    /////////////////////////
-    StorageReference firebaseStorage;
-    ////////////////////*/
+    /*    /////////////////////////
+        StorageReference firebaseStorage;
+        ////////////////////*/
     private static final int PICK_IMAGE = 100;
 
-String noviUrl;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
+
+    String time = null;
+
+    String noviUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,16 +91,52 @@ String noviUrl;
         textView2 = findViewById(R.id.riderTextView);
 
 
+
+        if(time == null){
+
+            time = String.valueOf(System.currentTimeMillis());
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            editor = preferences.edit();
+            editor.putString("timeKey", time);
+            editor.commit();
+
+            String imageName = preferences.getString("timeKey", "default");
+            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+
+        } else{
+
+            String imageName = preferences.getString("timeKey", "default");
+            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+        }
+   /*     if(imageName==time.toString()){
+
+            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+        } else {
+            String time = String.valueOf(System.currentTimeMillis());
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            editor = preferences.edit();
+            editor.putString("timeKey", time);
+            editor.commit();
+            String imageName = preferences.getString("timeKey", "default");
+        }
+*/
+
         //////////////////////
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference("profilepictures");
-        storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + System.currentTimeMillis() + ".jpg");
+        //firebaseDatabase = FirebaseDatabase.getInstance().getReference("profilepictures");
+      /*  storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + time + ".jpg");
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("urlurl", uri.toString());
                 noviUrl = uri.toString();
             }
-        });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("urlurl2", "failed");
+            }
+        });*/
 //////////////////
 
      /*   ////////////////
@@ -144,6 +188,7 @@ String noviUrl;
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 finish();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////pripazi na ovo
                 startActivity(new Intent(getApplicationContext(), sign_up_screen2.class));
 
@@ -161,15 +206,16 @@ String noviUrl;
         if (user != null) {
             Log.d("bla", user.getPhotoUrl().toString());
 
-            if (user.getPhotoUrl() != null) {
+            if (noviUrl != null) {
                 //Picasso.get().load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg").into(imageView);
 
+                //String imageName = preferences.getString("timeKey", "default");
                 Glide.with(this)
-                        //.load(noviUrl)
+                        .load(noviUrl)
 //                        .load(firebaseDatabase)
                         //.load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg")
-                        .load("https://firebasestorage.googleapis.com/v0/b/bmxrideandsleep.appspot.com/o/profilepictures%2F1536763546087.jpg?alt=media&token=25a85aea-cdd1-44d1-939f-e80e5e3d86bf")
-                        //.load(userInfo.getPhotoUrl())
+                        //.load("https://firebasestorage.googleapis.com/v0/b/bmxrideandsleep.appspot.com/o/profilepictures%2F1536763546087.jpg?alt=media&token=25a85aea-cdd1-44d1-939f-e80e5e3d86bf")
+                        //.load(user.getPhotoUrl())
                         .into(imageView);
                 //Glide.with(this).load(userInfo.getPhotoUrl()).placeholder(R.drawable.default_profile).dontAnimate().into(view);
                /* imageView.setImageURI(Uri.parse(userInfo.getPhotoUrl().toString()));
@@ -276,7 +322,9 @@ String noviUrl;
     private void uploadImageToFirebase() {
         progressDialog.setMessage("Uploading..");
         progressDialog.show();
-        final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + System.currentTimeMillis() + ".jpg");
+
+
+        final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + time + ".jpg");
 
         if (imageURI != null) {
             profilePictureReference.putFile(imageURI)
@@ -288,6 +336,29 @@ String noviUrl;
                             progressDialog.dismiss();
                             Toast.makeText(profileActivity.this, "Image uploaded", Toast.LENGTH_LONG).show();
 
+                            profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Log.d("urlurl", uri.toString());
+                                    noviUrl = uri.toString();
+                                    Glide.with(getApplicationContext())
+                                            .load(noviUrl)
+                                            .into(imageView);
+                                    preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    editor = preferences.edit();
+                                    editor.putString("timeKey", noviUrl);
+                                    editor.commit();
+
+                                    String imageName = preferences.getString("timeKey", "default");
+                                    Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    Log.d("urlurl2", "failed");
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -296,8 +367,13 @@ String noviUrl;
                             Toast.makeText(profileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
+
+            /*
+            storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + time + ".jpg");*/
+
         }
     }
+
 
 
 
@@ -310,4 +386,5 @@ String noviUrl;
 
         }
     }
+
 }

@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="hr.etfos.mgrgic.bmxridesleep">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -21,11 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".logInActivity"/>
+        <activity android:name=".logInActivity" />
         <activity android:name=".sign_up_screen2" />
         <activity android:name=".sign_up_screen3" />
         <activity android:name=".profileActivity" />
-        <activity android:name=".frontPageActivity"></activity>
+        <activity android:name=".frontPageActivity" />
+        <activity android:name=".mapsActivity"></activity>
     </application>
 
 </manifest>
