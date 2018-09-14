@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class mapsActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/" + fileName);
+        //webView.addJavascriptInterface(new webViewInterface(), "mapJavaScriptInterface");
 
 
         ActivityCompat.requestPermissions(mapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
@@ -56,9 +58,16 @@ public class mapsActivity extends AppCompatActivity {
                 Location location = gpsTracker.getLocation();
 
                 if(location != null){
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    Toast.makeText(getApplicationContext(), "Latitude: " + latitude + " Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                    final double latitude = location.getLatitude();
+                    final double longitude = location.getLongitude();
+
+                    textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
+                    webView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
+                        }
+                    });
                 }else{
                     Toast.makeText(getApplicationContext(),"Location is null", Toast.LENGTH_LONG).show();
                 }
@@ -69,6 +78,32 @@ public class mapsActivity extends AppCompatActivity {
 
 
 
+   /* public class webViewInterface{
+
+        @JavascriptInterface
+        public void showToast(){
+            GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
+            Location location = gpsTracker.getLocation();
+
+            if(location != null){
+                final double latitude = location.getLatitude();
+                final double longitude = location.getLongitude();
+
+                textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
+
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
+                    }
+                });
+
+            }else{
+                Toast.makeText(getApplicationContext(),"Location is null", Toast.LENGTH_LONG).show();
+            }
+            //Toast.makeText(getApplicationContext(), "javascript webinterface", Toast.LENGTH_LONG).show();
+        }
+    }*/
 
 
 }
