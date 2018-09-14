@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -28,14 +29,11 @@ import static java.security.AccessController.getContext;
 public class mapsActivity extends AppCompatActivity {
 
     WebView webView;
-    LocationManager locationManager;
-    LocationListener locationListener;
     Button button;
     TextView textView;
 
     private String fileName = "map.html";
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,95 +47,28 @@ public class mapsActivity extends AppCompatActivity {
         webView.loadUrl("file:///android_asset/" + fileName);
 
 
-        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                textView.append("\n " + location.getLatitude() + " " + location.getLongitude());
-                webView.loadUrl("javascript:showUserLocation('"
-                        + location.getLatitude() + "', '"
-                        + location.getLongitude() + "')");
+        ActivityCompat.requestPermissions(mapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
-
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.INTERNET
-                }, 10);
-            }
-            return;
-        } else {
-            configureButton();
-        }
-
-*/
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.INTERNET
-            }, 10);
-            return;
-        }else{
-            configureButton();
-        }
-    }
-
-  /*  @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode){
-            case 10:
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    configureButton();
-                return;
-        }
-    }*/
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch(requestCode){
-            case 10:
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    configureButton();
-                return;
-        }
-    }
-
-    private void configureButton() {
         button.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
+                GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
+                Location location = gpsTracker.getLocation();
 
-                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+                if(location != null){
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    Toast.makeText(getApplicationContext(), "Latitude: " + latitude + " Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Location is null", Toast.LENGTH_LONG).show();
+                }
             }
         });
+
     }
+
+
+
 
 
 }

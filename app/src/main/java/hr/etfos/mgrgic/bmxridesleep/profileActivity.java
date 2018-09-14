@@ -52,6 +52,7 @@ public class profileActivity extends AppCompatActivity {
     EditText editText;
     Button button;
     Button button1;
+    Button button2;
     Uri imageURI;
     TextView textView;
     TextView textView1;
@@ -89,7 +90,7 @@ public class profileActivity extends AppCompatActivity {
         textView = findViewById(R.id.verifyTextView);
         textView1 = findViewById(R.id.logOut);
         textView2 = findViewById(R.id.riderTextView);
-
+        button2 = findViewById(R.id.maps);
 
 
         if(time == null){
@@ -101,12 +102,12 @@ public class profileActivity extends AppCompatActivity {
             editor.commit();
 
             String imageName = preferences.getString("timeKey", "default");
-            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
 
         } else{
 
             String imageName = preferences.getString("timeKey", "default");
-            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
         }
    /*     if(imageName==time.toString()){
 
@@ -192,6 +193,12 @@ public class profileActivity extends AppCompatActivity {
                 finish();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////pripazi na ovo
                 startActivity(new Intent(getApplicationContext(), sign_up_screen2.class));
 
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), mapsActivity.class));
             }
         });
 
