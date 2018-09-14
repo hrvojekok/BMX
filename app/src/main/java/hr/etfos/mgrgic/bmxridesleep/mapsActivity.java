@@ -29,8 +29,11 @@ import static java.security.AccessController.getContext;
 
 public class mapsActivity extends AppCompatActivity {
 
+    String latitudeToSend;
+    String longitudeToSend;
     WebView webView;
     Button button;
+    Button button2;
     TextView textView;
 
     private String fileName = "map.html";
@@ -43,6 +46,7 @@ public class mapsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         textView = findViewById(R.id.textViewLocation);
         button = findViewById(R.id.getMyLocation);
+        button2 = findViewById(R.id.confirmButton);
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/" + fileName);
@@ -61,6 +65,7 @@ public class mapsActivity extends AppCompatActivity {
                     final double latitude = location.getLatitude();
                     final double longitude = location.getLongitude();
 
+
                     textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
                     webView.post(new Runnable() {
                         @Override
@@ -74,7 +79,26 @@ public class mapsActivity extends AppCompatActivity {
             }
         });
 
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
+                Location location = gpsTracker.getLocation();
+
+                final double latitude =  location.getLatitude();
+                final double longitude = location.getLongitude();
+
+                latitudeToSend = String.valueOf(latitude);
+                longitudeToSend = String.valueOf(longitude);
+
+                Intent intentProfile = new Intent(getApplicationContext(), profileActivity.class);
+                intentProfile.putExtra("latitude", latitudeToSend);
+                intentProfile.putExtra("longitude", longitudeToSend);
+                startActivity(intentProfile);
+            }
+        });
     }
+
 
 
 

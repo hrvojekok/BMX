@@ -2,6 +2,7 @@ package hr.etfos.mgrgic.bmxridesleep;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,9 +12,11 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,6 +60,7 @@ public class profileActivity extends AppCompatActivity {
     TextView textView;
     TextView textView1;
     TextView textView2;
+    TextView textView3;
 
     String spinnerValue1;
     String spinnerValue2;
@@ -73,9 +77,9 @@ public class profileActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
-
+    private String pictureName = "";
     String time = null;
-
+    String value = "";
     String noviUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,66 +94,51 @@ public class profileActivity extends AppCompatActivity {
         textView = findViewById(R.id.verifyTextView);
         textView1 = findViewById(R.id.logOut);
         textView2 = findViewById(R.id.riderTextView);
+        textView3 = findViewById(R.id.locationTextView);
         button2 = findViewById(R.id.maps);
 
 
-        if(time == null){
+
+/*
+
+
+            Glide.with(getApplicationContext())
+                    .load(preferences.getString("realImage",""))
+                    .into(imageView);
+*/
+
+            /*
+        String pictureName = preferences.getString("pictureName", "");
+        Toast.makeText(this, pictureName, Toast.LENGTH_LONG).show();
+        Log.d("pictureName", pictureName);
+        */
+      /*  if(time == null){
 
             time = String.valueOf(System.currentTimeMillis());
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            //preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+            preferences = getPreferences(this.MODE_PRIVATE);
             editor = preferences.edit();
             editor.putString("timeKey", time);
             editor.commit();
 
-            String imageName = preferences.getString("timeKey", "default");
-            //Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
+            String imageName = preferences.getString("timeKey", "");
+            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
 
         } else{
 
-            String imageName = preferences.getString("timeKey", "default");
+            String imageName = preferences.getString("timeKey", "");
             //Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
-        }
-   /*     if(imageName==time.toString()){
+        }*/
 
-            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
-        } else {
-            String time = String.valueOf(System.currentTimeMillis());
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            editor = preferences.edit();
-            editor.putString("timeKey", time);
-            editor.commit();
-            String imageName = preferences.getString("timeKey", "default");
-        }
-*/
-
-        //////////////////////
-        //firebaseDatabase = FirebaseDatabase.getInstance().getReference("profilepictures");
-      /*  storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + time + ".jpg");
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d("urlurl", uri.toString());
-                noviUrl = uri.toString();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                Log.d("urlurl2", "failed");
-            }
-        });*/
-//////////////////
-
-     /*   ////////////////
-        firebaseStorage = FirebaseStorage.getInstance().getReference();
-        Log.d("blabla", firebaseStorage.toString());
-///////////////////////////*/
 
         progressDialog = new ProgressDialog(this);
         Intent intent = getIntent();
+        Intent intentProfile = getIntent();
         spinnerValue1 = intent.getStringExtra("spinnerValue1");
         spinnerValue2 = intent.getStringExtra("spinnerValue2");
-
+        String latitudeFromMaps = intentProfile.getStringExtra("latitude");
+        String longitudeFromMaps = intentProfile.getStringExtra("longitude");
 
         loadUserInfo();
         if(spinnerValue1 != null && spinnerValue2 != null){
@@ -158,6 +147,10 @@ public class profileActivity extends AppCompatActivity {
         }
         //Toast.makeText(getApplicationContext(), spinnerValue1, Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(), spinnerValue2, Toast.LENGTH_LONG).show();
+
+        if(latitudeFromMaps != null && longitudeFromMaps != null) {
+            textView3.setText("Your latitude is: " + latitudeFromMaps + ", your longitude is: " + longitudeFromMaps);
+        }
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,28 +204,18 @@ public class profileActivity extends AppCompatActivity {
 
 
         if (user != null) {
-            Log.d("bla", user.getPhotoUrl().toString());
+            //Log.d("imageFromFirebaseTime", user.getPhotoUrl().toString());
 
             if (noviUrl != null) {
-                //Picasso.get().load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg").into(imageView);
-
-                //String imageName = preferences.getString("timeKey", "default");
                 Glide.with(this)
                         .load(noviUrl)
-//                        .load(firebaseDatabase)
-                        //.load("gs://bmxrideandsleep.appspot.com/profilepictures/1536790148912.jpg")
-                        //.load("https://firebasestorage.googleapis.com/v0/b/bmxrideandsleep.appspot.com/o/profilepictures%2F1536763546087.jpg?alt=media&token=25a85aea-cdd1-44d1-939f-e80e5e3d86bf")
-                        //.load(user.getPhotoUrl())
                         .into(imageView);
-                //Glide.with(this).load(userInfo.getPhotoUrl()).placeholder(R.drawable.default_profile).dontAnimate().into(view);
-               /* imageView.setImageURI(Uri.parse(userInfo.getPhotoUrl().toString()));
-
-                imageView.setImageURI(imageURI);
-*/
-                //     Picasso.get().load(userInfo.getPhotoUrl()).into(imageView);
             }
             if (user.getDisplayName() != null) {
                 editText.setText(user.getDisplayName());
+
+                String pictureName = editText.getText().toString();
+
             }
         }
 
@@ -261,6 +244,7 @@ public class profileActivity extends AppCompatActivity {
     //problem
     private void saveInfo() {
         String name = editText.getText().toString();
+
 
         progressDialog.setMessage("Saving info..");
         progressDialog.show();
@@ -312,18 +296,42 @@ public class profileActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             imageURI = data.getData();
             imageView.setImageURI(imageURI);
-/////////////////////////
-         /*   StorageReference filepath = firebaseStorage.child("Photos").child(imageURI.getLastPathSegment());
-            filepath.putFile(imageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            //uploadImageToFirebase();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please type in your nickname");
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(profileActivity.this, "Image uploaded", Toast.LENGTH_LONG).show();
+                public void onClick(DialogInterface dialog, int which) {
+                    pictureName = input.getText().toString();
+                    preferences = getPreferences(getApplication().MODE_PRIVATE);
+                    editor = preferences.edit();
+                    editor.putString("pictureName", pictureName);
+                    editor.commit();
+
+                    Log.d("pictureName", pictureName);
+                    if(pictureName != "") {
+                        uploadImageToFirebase();
+                    }
                 }
-            });*/
-            /////////////////////////
-            uploadImageToFirebase();
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
         }
+
+
     }
+
 
     //radi
     private void uploadImageToFirebase() {
@@ -331,57 +339,67 @@ public class profileActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-        final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + time + ".jpg");
+            final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + pictureName + ".jpg");
 
-        if (imageURI != null) {
-            profilePictureReference.putFile(imageURI)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            profileImageUrl = taskSnapshot.getUploadSessionUri().toString();
-                            Log.d("blablabla", profileImageUrl);
-                            progressDialog.dismiss();
-                            Toast.makeText(profileActivity.this, "Image uploaded", Toast.LENGTH_LONG).show();
+            if (imageURI != null) {
+                profilePictureReference.putFile(imageURI)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                profileImageUrl = taskSnapshot.getUploadSessionUri().toString();
+                                Log.d("imageActualUriUpload", profileImageUrl);
+                                progressDialog.dismiss();
+                                Toast.makeText(profileActivity.this, "Image uploaded", Toast.LENGTH_LONG).show();
 
-                            profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Log.d("urlurl", uri.toString());
-                                    noviUrl = uri.toString();
-                                    Glide.with(getApplicationContext())
-                                            .load(noviUrl)
-                                            .into(imageView);
-                                    preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    editor = preferences.edit();
-                                    editor.putString("timeKey", noviUrl);
-                                    editor.commit();
+                                profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Log.d("imageDownloadedUrl", uri.toString());
+                                        noviUrl = uri.toString();
+                                        Glide.with(getApplicationContext())
+                                                .load(noviUrl)
+                                                .into(imageView);
+                                        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        editor = preferences.edit();
+                                        editor.putString("realImage", noviUrl);
+                                        editor.commit();
 
-                                    String imageName = preferences.getString("timeKey", "default");
-                                    Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                                        /*String imageName = preferences.getString("realImage", "");
+                                        Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();*/
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
 
-                                    Log.d("urlurl2", "failed");
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(profileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                                        Log.d("imageFailed", "failed");
+                                    }
+                                });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(profileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-            /*
-            storageReference = FirebaseStorage.getInstance().getReference().child("profilepictures/" + time + ".jpg");*/
 
-        }
+            }
+
     }
+/*
 
 
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        //Log.d("resumeNoviUrl", noviUrl);
+        Glide.with(getApplicationContext())
+                .load()
+                .into(imageView);
+    }
+*/
 
 
     @Override
@@ -392,6 +410,7 @@ public class profileActivity extends AppCompatActivity {
             startActivity(new Intent(this, logInActivity.class));
 
         }
+
     }
 
 }

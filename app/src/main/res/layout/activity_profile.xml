@@ -39,9 +39,17 @@
         <TextView
             android:layout_below="@+id/profilePicture"
             android:layout_width="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:id="@+id/riderTextView"/>
+        <TextView
+            android:layout_marginHorizontal="10dp"
+            android:layout_below="@+id/riderTextView"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationTextView"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -49,37 +57,21 @@
             android:hint="Enter your nickname"
             android:layout_marginHorizontal="30dp"
             android:id="@+id/personalInfo"
-            android:layout_below="@+id/riderTextView"/>
+            android:layout_below="@+id/locationTextView"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="save"
             android:id="@+id/saveButton"
+            android:layout_margin="10dp"
             android:layout_below="@+id/personalInfo"
             android:layout_centerHorizontal="true"
             android:background="@color/colorAccent"/>
-        <TextView
-            android:id="@+id/verifyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/saveButton"/>
-
-        <TextView
-            android:id="@+id/logOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click here to log out"
-            android:layout_below="@+id/verifyTextView"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="30dp"/>
         <Button
             android:id="@+id/customize"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logOut"
+            android:layout_below="@+id/saveButton"
             android:layout_centerHorizontal="true"
             android:background="@color/colorAccent"
             android:text="Customize your profile"/>
@@ -92,6 +84,23 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:layout_below="@+id/customize"/>
+        <TextView
+            android:id="@+id/verifyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/maps"/>
+        <TextView
+            android:id="@+id/logOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click here to log out"
+            android:layout_below="@+id/verifyTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"/>
+
     </RelativeLayout>
 
 
