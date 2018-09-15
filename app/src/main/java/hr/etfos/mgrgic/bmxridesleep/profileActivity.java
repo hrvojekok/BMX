@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -72,6 +73,7 @@ public class profileActivity extends AppCompatActivity {
     String riding = null;
     String city = null;
     String knowSpots = null;
+    String token = null;
 /*
     String spinnerValue1;
     String spinnerValue2;*/
@@ -99,6 +101,7 @@ public class profileActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuthNick;
     private FirebaseAuth.AuthStateListener authStateListenerNick;
     private DatabaseReference databaseReferenceNick;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,7 @@ public class profileActivity extends AppCompatActivity {
         firebaseDatabaseNick = FirebaseDatabase.getInstance();
         databaseReferenceNick = firebaseDatabaseNick.getReference();
 
+
         databaseReferenceNick.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -152,6 +156,10 @@ public class profileActivity extends AppCompatActivity {
                 }
                 if(dataSnapshot.child(userID).child("knowSpots").getValue()!="") {
                     knowSpots = (String) dataSnapshot.child(userID).child("knowSpots").getValue();
+                }
+                if(FirebaseInstanceId.getInstance().getToken()!=null){
+                    token = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("token", token);
                 }
                 if(rider!=null && riding!=null && city!=null && knowSpots!=null) {
                     textView2.setText("I am a " + rider + " and I like riding: " + riding + ". I live in " + city + " and I am familiar with spots in: " + knowSpots + ".");
@@ -448,6 +456,8 @@ public class profileActivity extends AppCompatActivity {
                 .into(imageView);
     }
 */
+
+
 
 
 
