@@ -68,6 +68,10 @@ public class profileActivity extends AppCompatActivity {
     TextView textView1;
     TextView textView2;
     TextView textView3;
+    String rider = null;
+    String riding = null;
+    String city = null;
+    String knowSpots = null;
 /*
     String spinnerValue1;
     String spinnerValue2;*/
@@ -137,13 +141,21 @@ public class profileActivity extends AppCompatActivity {
                     String nicknameEditText = (String) dataSnapshot.child(userID).child("nickname").getValue();
                     editText.setText(nicknameEditText);
                 }
-
-                String rider = (String) dataSnapshot.child(userID).child("rider").getValue();
-                String riding = (String) dataSnapshot.child(userID).child("riding").getValue();
-                String city = (String) dataSnapshot.child(userID).child("city").getValue();
-                String knowSpots = (String) dataSnapshot.child(userID).child("knowSpots").getValue();
-                textView2.setText("I am a " + rider + " and I like riding: " + riding + ". I live in " + city + " and I am familiar with spots in: " + knowSpots + ".");
-
+                if(dataSnapshot.child(userID).child("rider").getValue() != "") {
+                    rider = (String) dataSnapshot.child(userID).child("rider").getValue();
+                }
+                if(dataSnapshot.child(userID).child("riding").getValue()!= "") {
+                    riding = (String) dataSnapshot.child(userID).child("riding").getValue();
+                }
+                if(dataSnapshot.child(userID).child("city").getValue()!="") {
+                    city = (String) dataSnapshot.child(userID).child("city").getValue();
+                }
+                if(dataSnapshot.child(userID).child("knowSpots").getValue()!="") {
+                    knowSpots = (String) dataSnapshot.child(userID).child("knowSpots").getValue();
+                }
+                if(rider!=null && riding!=null && city!=null && knowSpots!=null) {
+                    textView2.setText("I am a " + rider + " and I like riding: " + riding + ". I live in " + city + " and I am familiar with spots in: " + knowSpots + ".");
+                }
             }
 
             @Override
