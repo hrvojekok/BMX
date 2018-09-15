@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,6 +33,9 @@ public class sign_up_screen2 extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference databaseReference;
+    EditText editText1;
+    EditText editText2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,11 @@ public class sign_up_screen2 extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
+        editText1 = findViewById(R.id.chooseCity);
+        editText2 = findViewById(R.id.editTextFamiliar);
 
+
+        Button button = findViewById(R.id.nextButton2);
 
         authStateListener = new FirebaseAuth.AuthStateListener(){
             @Override
@@ -57,7 +65,7 @@ public class sign_up_screen2 extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null){
                     Log.d("TAG","onAuthStateChanged:signed_in: " + user.getUid());
-                    Toast.makeText(getApplicationContext(), "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 }else{
                     Log.d("TAG", "onAuthStateChange_signed_out: ");
                 }
@@ -110,7 +118,6 @@ public class sign_up_screen2 extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.nextButton2);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +134,8 @@ public class sign_up_screen2 extends AppCompatActivity {
 
                 String rider = spinnerValue1;
                 String riding = spinnerValue2;
+                String city = editText1.getText().toString();
+                String knowSpots = editText2.getText().toString();
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 String userID = user.getUid();
@@ -134,9 +143,10 @@ public class sign_up_screen2 extends AppCompatActivity {
 
                 databaseReference.child(userID).child("rider").setValue(rider);
                 databaseReference.child(userID).child("riding").setValue(riding);
-
-                Toast.makeText(getApplicationContext(),rider,Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),riding,Toast.LENGTH_SHORT).show();
+                databaseReference.child(userID).child("city").setValue(city);
+                databaseReference.child(userID).child("knowSpots").setValue(knowSpots);
+                //Toast.makeText(getApplicationContext(),rider,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),riding,Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 finish();
 

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaActionSound;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -67,9 +68,9 @@ public class profileActivity extends AppCompatActivity {
     TextView textView1;
     TextView textView2;
     TextView textView3;
-
+/*
     String spinnerValue1;
-    String spinnerValue2;
+    String spinnerValue2;*/
     private ProgressDialog progressDialog;
     String profileImageUrl;
     FirebaseAuth firebaseAuth;
@@ -87,6 +88,14 @@ public class profileActivity extends AppCompatActivity {
     String time = null;
     String value = "";
     String noviUrl;
+
+
+
+    private FirebaseDatabase firebaseDatabaseNick;
+    private FirebaseAuth firebaseAuthNick;
+    private FirebaseAuth.AuthStateListener authStateListenerNick;
+    private DatabaseReference databaseReferenceNick;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,63 +112,58 @@ public class profileActivity extends AppCompatActivity {
         textView3 = findViewById(R.id.locationTextView);
         button2 = findViewById(R.id.maps);
 
-
-
-
-/*
-
-
-            Glide.with(getApplicationContext())
-                    .load(preferences.getString("realImage",""))
-                    .into(imageView);
-*/
-
-            /*
-        String pictureName = preferences.getString("pictureName", "");
-        Toast.makeText(this, pictureName, Toast.LENGTH_LONG).show();
-        Log.d("pictureName", pictureName);
-        */
-      /*  if(time == null){
-
-            time = String.valueOf(System.currentTimeMillis());
-            //preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-            preferences = getPreferences(this.MODE_PRIVATE);
-            editor = preferences.edit();
-            editor.putString("timeKey", time);
-            editor.commit();
-
-            String imageName = preferences.getString("timeKey", "");
-            Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
-
-        } else{
-
-            String imageName = preferences.getString("timeKey", "");
-            //Toast.makeText(this, imageName, Toast.LENGTH_LONG).show();
-        }*/
-
-
         progressDialog = new ProgressDialog(this);
         Intent intent = getIntent();
         Intent intentProfile = getIntent();
+
+        /*
         spinnerValue1 = intent.getStringExtra("spinnerValue1");
         spinnerValue2 = intent.getStringExtra("spinnerValue2");
         String latitudeFromMaps = intentProfile.getStringExtra("latitude");
-        String longitudeFromMaps = intentProfile.getStringExtra("longitude");
+        String longitudeFromMaps = intentProfile.getStringExtra("longitude");*/
 
+
+        firebaseAuthNick = FirebaseAuth.getInstance();
+        firebaseDatabaseNick = FirebaseDatabase.getInstance();
+        databaseReferenceNick = firebaseDatabaseNick.getReference();
+
+        databaseReferenceNick.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseUser user = firebaseAuthNick.getCurrentUser();
+                String userID = user.getUid();
+
+                if(dataSnapshot.child(userID).child("nickname").getValue() != "") {
+                    String nicknameEditText = (String) dataSnapshot.child(userID).child("nickname").getValue();
+                    editText.setText(nicknameEditText);
+                }
+
+                String rider = (String) dataSnapshot.child(userID).child("rider").getValue();
+                String riding = (String) dataSnapshot.child(userID).child("riding").getValue();
+                String city = (String) dataSnapshot.child(userID).child("city").getValue();
+                String knowSpots = (String) dataSnapshot.child(userID).child("knowSpots").getValue();
+                textView2.setText("I am a " + rider + " and I like riding: " + riding + ". I live in " + city + " and I am familiar with spots in: " + knowSpots + ".");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         loadUserInfo();
-        if(spinnerValue1 != null && spinnerValue2 != null){
+   /*     if(spinnerValue1 != null && spinnerValue2 != null){
 
             textView2.setText("I am a " + spinnerValue1 + ", and I like riding " + spinnerValue2 + ".");
-        }
+        }*/
         //Toast.makeText(getApplicationContext(), spinnerValue1, Toast.LENGTH_LONG).show();
         //Toast.makeText(getApplicationContext(), spinnerValue2, Toast.LENGTH_LONG).show();
 
-        if(latitudeFromMaps != null && longitudeFromMaps != null) {
+        /*if(latitudeFromMaps != null && longitudeFromMaps != null) {
             textView3.setText("Your latitude is: " + latitudeFromMaps + ", your longitude is: " + longitudeFromMaps);
-        }
+        }*/
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,8 +181,19 @@ public class profileActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveInfo();
+                //saveInfo();
+                FirebaseUser user = firebaseAuthNick.getCurrentUser();
+                String userID = user.getUid();
 
+                String nickname = editText.getText().toString();
+                if(!nickname.isEmpty()){
+                    databaseReferenceNick.child(userID).child("nickname").setValue(nickname);
+
+                    Toast.makeText(getApplicationContext(),"Nickname saved to database", Toast.LENGTH_SHORT).show();
+                }else{
+
+                    Toast.makeText(getApplicationContext(),"Nickname is null", Toast.LENGTH_LONG).show();
+                }
             }
         });
         textView1.setOnClickListener(new View.OnClickListener() {
@@ -217,17 +232,20 @@ public class profileActivity extends AppCompatActivity {
         if (user != null) {
             //Log.d("imageFromFirebaseTime", user.getPhotoUrl().toString());
 
+
             if (noviUrl != null) {
                 Glide.with(this)
                         .load(noviUrl)
                         .into(imageView);
             }
-            if (user.getDisplayName() != null) {
-                editText.setText(user.getDisplayName());
+
+
+           /* if (user.getDisplayName() != null) {
+                //editText.setText(user.getDisplayName());
 
                 //String pictureName = editText.getText().toString();
 
-            }
+            }*/
         }
 
 
@@ -252,7 +270,7 @@ public class profileActivity extends AppCompatActivity {
     }
 
 
-    //problem
+   /* //problem
     private void saveInfo() {
         String name = editText.getText().toString();
 
@@ -292,7 +310,7 @@ public class profileActivity extends AppCompatActivity {
             Toast.makeText(profileActivity.this, "Failed", Toast.LENGTH_LONG).show();
         }
     }
-
+*/
     //radi
     private void selectProfilePicture() {
 
@@ -307,13 +325,21 @@ public class profileActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             imageURI = data.getData();
             imageView.setImageURI(imageURI);
+            FirebaseUser user = firebaseAuthNick.getCurrentUser();
+            String userID = user.getUid();
+
+            pictureName = userID.toString();
+            uploadImageToFirebase();
 
             //uploadImageToFirebase();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please type in your nickname");
             final EditText input = new EditText(this);
             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
+
+
+
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -337,7 +363,7 @@ public class profileActivity extends AppCompatActivity {
                 }
             });
 
-            builder.show();
+            builder.show();*/
         }
 
 
@@ -350,7 +376,10 @@ public class profileActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-            final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + pictureName + ".jpg");
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userID = user.getUid();
+
+            final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + userID + ".jpg");
 
             if (imageURI != null) {
                 profilePictureReference.putFile(imageURI)
@@ -370,10 +399,6 @@ public class profileActivity extends AppCompatActivity {
                                         Glide.with(getApplicationContext())
                                                 .load(noviUrl)
                                                 .into(imageView);
-                                        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        editor = preferences.edit();
-                                        editor.putString("realImage", noviUrl);
-                                        editor.commit();
 
                                         /*String imageName = preferences.getString("realImage", "");
                                         Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();*/
@@ -413,6 +438,7 @@ public class profileActivity extends AppCompatActivity {
 */
 
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -420,8 +446,32 @@ public class profileActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, logInActivity.class));
 
+        } else {
+
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String userID = user.getUid();
+
+            final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + userID + ".jpg");
+
+            profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.d("imageDownloadedUrl", uri.toString());
+                    noviUrl = uri.toString();
+                    Glide.with(getApplicationContext())
+                            .load(noviUrl)
+                            .into(imageView);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Log.d("imageFailed", "failed");
+                }
+            });
+
         }
 
     }
-
 }

@@ -76,7 +76,7 @@ public class mapsActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null){
                     Log.d("TAG","onAuthStateChanged:signed_in: " + user.getUid());
-                    Toast.makeText(getApplicationContext(), "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 }else{
                     Log.d("TAG", "onAuthStateChange_signed_out: ");
                 }
