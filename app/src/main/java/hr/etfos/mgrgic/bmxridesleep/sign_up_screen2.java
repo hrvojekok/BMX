@@ -1,6 +1,7 @@
 package hr.etfos.mgrgic.bmxridesleep;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class sign_up_screen2 extends AppCompatActivity {
 
     public String spinnerValue1;
@@ -19,6 +28,10 @@ public class sign_up_screen2 extends AppCompatActivity {
     Spinner spinner2;
     ArrayAdapter<CharSequence> adapter;
     ArrayAdapter<CharSequence> adapter2;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +43,47 @@ public class sign_up_screen2 extends AppCompatActivity {
         adapter = ArrayAdapter.createFromResource(this, R.array.rider, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+
+
+
+        authStateListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user!=null){
+                    Log.d("TAG","onAuthStateChanged:signed_in: " + user.getUid());
+                    Toast.makeText(getApplicationContext(), "Signed in: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Log.d("TAG", "onAuthStateChange_signed_out: ");
+                }
+            }
+        };
+
+        // Read from the database
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Object value = dataSnapshot.getValue();
+                Log.d("value", "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("value", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -63,15 +117,43 @@ public class sign_up_screen2 extends AppCompatActivity {
             public void onClick(View v) {
                 /*Intent intent = new Intent(sign_up_screen2.this, sign_up_screen3.class);
                 startActivity(intent);*/
-
                 Intent intent = new Intent(sign_up_screen2.this, profileActivity.class);
-                intent.putExtra("spinnerValue1", spinnerValue1);
+              /*  intent.putExtra("spinnerValue1", spinnerValue1);
                 Log.d("spinnerValue1", spinnerValue1);
                 intent.putExtra("spinnerValue2", spinnerValue2);
                 startActivity(intent);
                 finish();
+*/
+
+                String rider = spinnerValue1;
+                String riding = spinnerValue2;
+
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                String userID = user.getUid();
+
+
+                databaseReference.child(userID).child("rider").setValue(rider);
+                databaseReference.child(userID).child("riding").setValue(riding);
+
+                Toast.makeText(getApplicationContext(),rider,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),riding,Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                finish();
+
             }
         });
 
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        if(authStateListener != null){
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
     }
 }

@@ -27,6 +27,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -99,6 +105,7 @@ public class profileActivity extends AppCompatActivity {
 
 
 
+
 /*
 
 
@@ -140,6 +147,8 @@ public class profileActivity extends AppCompatActivity {
         String latitudeFromMaps = intentProfile.getStringExtra("latitude");
         String longitudeFromMaps = intentProfile.getStringExtra("longitude");
 
+
+
         loadUserInfo();
         if(spinnerValue1 != null && spinnerValue2 != null){
 
@@ -169,6 +178,7 @@ public class profileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveInfo();
+
             }
         });
         textView1.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +202,7 @@ public class profileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), mapsActivity.class));
+                finish();
             }
         });
 
@@ -214,7 +225,7 @@ public class profileActivity extends AppCompatActivity {
             if (user.getDisplayName() != null) {
                 editText.setText(user.getDisplayName());
 
-                String pictureName = editText.getText().toString();
+                //String pictureName = editText.getText().toString();
 
             }
         }
