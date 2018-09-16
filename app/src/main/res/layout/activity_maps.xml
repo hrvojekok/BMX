@@ -13,14 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="400dp" />
     <Button
-        android:background="@color/colorAccent"
-        android:id="@+id/getMyLocation"
-        android:layout_below="@+id/webView"
-        android:layout_margin="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="GET MY LOCATION"/>
+    android:background="@color/colorAccent"
+    android:id="@+id/getMyLocation"
+    android:layout_below="@+id/webView"
+    android:layout_margin="10dp"
+    android:layout_centerHorizontal="true"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="GET MY LOCATION"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"

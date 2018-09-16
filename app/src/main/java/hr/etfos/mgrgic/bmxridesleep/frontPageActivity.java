@@ -39,6 +39,7 @@ public class frontPageActivity extends AppCompatActivity {
     ArrayList<String> riderList;
     ArrayList<String> ridingList;
     ArrayList<String> emailList;
+    ArrayList<String> locationList;
     searchAdapter  searchAdapterAdapter;
     String emailLogin = null;
 
@@ -79,6 +80,7 @@ public class frontPageActivity extends AppCompatActivity {
         riderList = new ArrayList<>();
         ridingList = new ArrayList<>();
         emailList = new ArrayList<>();
+        locationList = new ArrayList<>();
 
 
 
@@ -122,6 +124,7 @@ public class frontPageActivity extends AppCompatActivity {
                     riderList.clear();
                     ridingList.clear();
                     emailList.clear();
+                    locationList.clear();
                     recyclerView.removeAllViews();
                 }
             }
@@ -141,6 +144,7 @@ public class frontPageActivity extends AppCompatActivity {
                 riderList.clear();
                 ridingList.clear();
                 emailList.clear();
+                locationList.clear();
                 recyclerView.removeAllViews();
                 int counter = 0;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
@@ -149,24 +153,28 @@ public class frontPageActivity extends AppCompatActivity {
                     String rider = (String) snapshot.child("rider").getValue();
                     String riding = (String) snapshot.child("riding").getValue();
                     String email = (String) snapshot.child("email").getValue();
+                    String location = (String) snapshot.child("city").getValue();
 
                     if(userName.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
+                        locationList.add(location);
                         counter++;
                     }else if (rider.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
+                        locationList.add(location);
                         counter++;
                     } else if (riding.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
+                        locationList.add(location);
                         counter++;
                     }
 
@@ -174,7 +182,7 @@ public class frontPageActivity extends AppCompatActivity {
                         break;
                     }
 
-                    searchAdapterAdapter = new searchAdapter(frontPageActivity.this, userNameList, riderList, ridingList, emailList);
+                    searchAdapterAdapter = new searchAdapter(frontPageActivity.this, userNameList, riderList, ridingList, emailList, locationList);
                     recyclerView.setAdapter(searchAdapterAdapter);
 
 

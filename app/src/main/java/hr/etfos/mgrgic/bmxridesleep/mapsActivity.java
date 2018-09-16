@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,36 +159,59 @@ public class mapsActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
+/*
+
+    private void showAllExistingUsers() {
+
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
 
 
+                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
-   /* public class webViewInterface{
-
-        @JavascriptInterface
-        public void showToast(){
-            GpsTracker gpsTracker = new GpsTracker(getApplicationContext());
-            Location location = gpsTracker.getLocation();
-
-            if(location != null){
-                final double latitude = location.getLatitude();
-                final double longitude = location.getLongitude();
-
-                textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
-
-                webView.post(new Runnable() {
+                ValueEventListener eventListener = new ValueEventListener() {
                     @Override
-                    public void run() {
-                        webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
-                    }
-                });
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            final String latitude = ds.child("locationLongitude").getValue(String.class);
+                            final String longitude = ds.child("locationLatitude").getValue(String.class);
 
-            }else{
-                Toast.makeText(getApplicationContext(),"Location is null", Toast.LENGTH_LONG).show();
+                            webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
+                            Log.d("TAG", longitude + longitude);
+                            */
+/*webView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
+                                }
+                            });*//*
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                };
+                rootRef.addListenerForSingleValueEvent(eventListener);
+
+
+               */
+/* databaseReference.child(userID).child("email").setValue(emailLogin);
+
+
+                webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");*//*
+
             }
-            //Toast.makeText(getApplicationContext(), "javascript webinterface", Toast.LENGTH_LONG).show();
-        }
-    }*/
+        });
+    }
+*/
+
+
 
     @Override
     public void onStart(){

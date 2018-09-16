@@ -21,6 +21,7 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
     ArrayList<String> riderList;
     ArrayList<String> ridingList;
     ArrayList<String> emailList;
+    ArrayList<String> locationList;
 
     class SearchViewHolder extends  RecyclerView.ViewHolder{
 
@@ -28,6 +29,7 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
         TextView textViewRider;
         TextView textViewRiding;
         TextView textViewEmail;
+        TextView textViewLocation;
 
 
         public SearchViewHolder(View itemView) {
@@ -37,16 +39,18 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
             textViewRider = itemView.findViewById(R.id.riderGoesHere);
             textViewRiding = itemView.findViewById(R.id.ridingGoesHere);
             textViewEmail = itemView.findViewById(R.id.emailGoesHere);
+            textViewLocation = itemView.findViewById(R.id.locationGoesHere);
 
         }
     }
 
-    public searchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> riderList, ArrayList<String> ridingList,  ArrayList<String> emailList) {
+    public searchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> riderList, ArrayList<String> ridingList,  ArrayList<String> emailList, ArrayList<String> locationList) {
         this.context = context;
         this.userNameList = userNameList;
         this.riderList = riderList;
         this.ridingList = ridingList;
         this.emailList = emailList;
+        this.locationList = locationList;
     }
 
     @NonNull
@@ -65,6 +69,7 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
         holder.textViewRider.setText(riderList.get(position));
         holder.textViewRiding.setText(ridingList.get(position));
         holder.textViewEmail.setText(emailList.get(position));
+        holder.textViewLocation.setText(locationList.get(position));
 
         holder.textViewUserName.setOnClickListener(new View.OnClickListener() {
             @Override

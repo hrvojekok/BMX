@@ -27,7 +27,6 @@
         </activity>
         <activity android:name=".logInActivity" />
         <activity android:name=".sign_up_screen2" />
-        <activity android:name=".sign_up_screen3" />
         <activity android:name=".profileActivity" />
         <activity android:name=".frontPageActivity" />
         <activity android:name=".sendEmailActivity"/>
