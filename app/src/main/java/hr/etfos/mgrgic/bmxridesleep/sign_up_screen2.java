@@ -122,7 +122,7 @@ public class sign_up_screen2 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 Intent intent = new Intent(sign_up_screen2.this, profileActivity.class);
 
 
