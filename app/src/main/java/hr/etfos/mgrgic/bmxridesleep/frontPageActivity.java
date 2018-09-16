@@ -10,9 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,14 +38,20 @@ public class frontPageActivity extends AppCompatActivity {
     ArrayList<String> userNameList;
     ArrayList<String> riderList;
     ArrayList<String> ridingList;
+    ArrayList<String> emailList;
     searchAdapter  searchAdapterAdapter;
+    String emailLogin = null;
+
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         button = findViewById(R.id.profileButton);
         editText = findViewById(R.id.searchByUsername);
         recyclerView = findViewById(R.id.recyclerView);
@@ -54,6 +62,10 @@ public class frontPageActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(searchAdapterAdapter);
         */
+
+        emailLogin = intent.getStringExtra("email");
+
+        //Toast.makeText(this, emailLogin, Toast.LENGTH_LONG).show();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -66,8 +78,20 @@ public class frontPageActivity extends AppCompatActivity {
         userNameList = new ArrayList<>();
         riderList = new ArrayList<>();
         ridingList = new ArrayList<>();
+        emailList = new ArrayList<>();
 
 
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userID = user.getUid();
+
+        if(emailLogin != null) {
+            databaseReference.child(userID).child("email").setValue(emailLogin);
+        }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +121,7 @@ public class frontPageActivity extends AppCompatActivity {
                     userNameList.clear();
                     riderList.clear();
                     ridingList.clear();
+                    emailList.clear();
                     recyclerView.removeAllViews();
                 }
             }
@@ -115,6 +140,7 @@ public class frontPageActivity extends AppCompatActivity {
                 userNameList.clear();
                 riderList.clear();
                 ridingList.clear();
+                emailList.clear();
                 recyclerView.removeAllViews();
                 int counter = 0;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
@@ -122,21 +148,25 @@ public class frontPageActivity extends AppCompatActivity {
                     String userName = (String) snapshot.child("nickname").getValue();
                     String rider = (String) snapshot.child("rider").getValue();
                     String riding = (String) snapshot.child("riding").getValue();
+                    String email = (String) snapshot.child("email").getValue();
 
                     if(userName.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
+                        emailList.add(email);
                         counter++;
                     }else if (rider.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
+                        emailList.add(email);
                         counter++;
                     } else if (riding.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
+                        emailList.add(email);
                         counter++;
                     }
 
@@ -144,7 +174,7 @@ public class frontPageActivity extends AppCompatActivity {
                         break;
                     }
 
-                    searchAdapterAdapter = new searchAdapter(frontPageActivity.this, userNameList, riderList, ridingList);
+                    searchAdapterAdapter = new searchAdapter(frontPageActivity.this, userNameList, riderList, ridingList, emailList);
                     recyclerView.setAdapter(searchAdapterAdapter);
 
 

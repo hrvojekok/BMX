@@ -69,7 +69,7 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void registerUser(){
-        String email = editTextEmail.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
@@ -92,6 +92,7 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
                             Intent intent = new Intent(registerActivity.this, frontPageActivity.class);
                             progressDialog.dismiss();
 
+                            intent.putExtra("email", email);
                             startActivity(intent);
                             //Toast.makeText(registerActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                         }else{

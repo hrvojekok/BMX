@@ -62,8 +62,10 @@ logInActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     public void loginUser(){
-        String email = editTextEmailLogIn.getText().toString().trim();
+        final String email = editTextEmailLogIn.getText().toString().trim();
         String password = editTextPasswordLogIn.getText().toString().trim();
+
+
 
         if(TextUtils.isEmpty(email)){
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
@@ -80,7 +82,7 @@ logInActivity extends AppCompatActivity implements View.OnClickListener {
                 if(task.isSuccessful()){
                     Intent intent = new Intent(logInActivity.this, frontPageActivity.class);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//ne radi
-
+                    intent.putExtra("email", email);
                     progressDialog.dismiss();
                     startActivity(intent);
                     finish();

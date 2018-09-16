@@ -28,6 +28,12 @@
             android:layout_height="wrap_content"
             android:text="riding goes here"
             android:id="@+id/ridingGoesHere"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_height="wrap_content"
+            android:text="email goes here"
+            android:id="@+id/emailGoesHere"/>
 
     </LinearLayout>
 

@@ -30,6 +30,7 @@
         <activity android:name=".sign_up_screen3" />
         <activity android:name=".profileActivity" />
         <activity android:name=".frontPageActivity" />
+        <activity android:name=".sendEmailActivity"/>
         <activity android:name=".mapsActivity"></activity>
     </application>
 

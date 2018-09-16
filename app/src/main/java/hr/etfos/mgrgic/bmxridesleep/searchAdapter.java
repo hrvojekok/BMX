@@ -1,6 +1,7 @@
 package hr.etfos.mgrgic.bmxridesleep;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,12 +20,14 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
     ArrayList<String> userNameList;
     ArrayList<String> riderList;
     ArrayList<String> ridingList;
+    ArrayList<String> emailList;
 
     class SearchViewHolder extends  RecyclerView.ViewHolder{
 
         TextView textViewUserName;
         TextView textViewRider;
         TextView textViewRiding;
+        TextView textViewEmail;
 
 
         public SearchViewHolder(View itemView) {
@@ -33,16 +36,17 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
             textViewUserName = itemView.findViewById(R.id.userNameGoesHere);
             textViewRider = itemView.findViewById(R.id.riderGoesHere);
             textViewRiding = itemView.findViewById(R.id.ridingGoesHere);
-
+            textViewEmail = itemView.findViewById(R.id.emailGoesHere);
 
         }
     }
 
-    public searchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> riderList, ArrayList<String> ridingList) {
+    public searchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> riderList, ArrayList<String> ridingList,  ArrayList<String> emailList) {
         this.context = context;
         this.userNameList = userNameList;
         this.riderList = riderList;
         this.ridingList = ridingList;
+        this.emailList = emailList;
     }
 
     @NonNull
@@ -55,16 +59,25 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
 
         holder.textViewUserName.setText(userNameList.get(position));
         holder.textViewRider.setText(riderList.get(position));
         holder.textViewRiding.setText(ridingList.get(position));
+        holder.textViewEmail.setText(emailList.get(position));
 
         holder.textViewUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Full Name Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Full Name Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, sendEmailActivity.class);
+
+                String email = emailList.get(position);
+
+                intent.putExtra("email", email);
+                //Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
+
+                context.startActivity(intent);
             }
         });
     }

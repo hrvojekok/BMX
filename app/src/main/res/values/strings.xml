@@ -36,4 +36,6 @@
         <item>Dirt</item>
         <item>Flatland</item>
     </string-array>
+    <string name="message">Hi, wanna ride?</string>
+    <string name="subject">You have one new BMXrideandsleep request</string>
 </resources>
