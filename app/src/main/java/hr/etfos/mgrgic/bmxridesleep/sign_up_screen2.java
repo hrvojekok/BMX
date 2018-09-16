@@ -122,15 +122,9 @@ public class sign_up_screen2 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(sign_up_screen2.this, sign_up_screen3.class);
-                startActivity(intent);*/
+                
                 Intent intent = new Intent(sign_up_screen2.this, profileActivity.class);
-              /*  intent.putExtra("spinnerValue1", spinnerValue1);
-                Log.d("spinnerValue1", spinnerValue1);
-                intent.putExtra("spinnerValue2", spinnerValue2);
-                startActivity(intent);
-                finish();
-*/
+
 
                 String rider = spinnerValue1;
                 String riding = spinnerValue2;

@@ -123,11 +123,6 @@ public class profileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Intent intentProfile = getIntent();
 
-        /*
-        spinnerValue1 = intent.getStringExtra("spinnerValue1");
-        spinnerValue2 = intent.getStringExtra("spinnerValue2");
-        String latitudeFromMaps = intentProfile.getStringExtra("latitude");
-        String longitudeFromMaps = intentProfile.getStringExtra("longitude");*/
 
 
         firebaseAuthNick = FirebaseAuth.getInstance();
@@ -174,16 +169,7 @@ public class profileActivity extends AppCompatActivity {
 
 
         loadUserInfo();
-   /*     if(spinnerValue1 != null && spinnerValue2 != null){
 
-            textView2.setText("I am a " + spinnerValue1 + ", and I like riding " + spinnerValue2 + ".");
-        }*/
-        //Toast.makeText(getApplicationContext(), spinnerValue1, Toast.LENGTH_LONG).show();
-        //Toast.makeText(getApplicationContext(), spinnerValue2, Toast.LENGTH_LONG).show();
-
-        /*if(latitudeFromMaps != null && longitudeFromMaps != null) {
-            textView3.setText("Your latitude is: " + latitudeFromMaps + ", your longitude is: " + longitudeFromMaps);
-        }*/
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,12 +246,6 @@ public class profileActivity extends AppCompatActivity {
             }
 
 
-           /* if (user.getDisplayName() != null) {
-                //editText.setText(user.getDisplayName());
-
-                //String pictureName = editText.getText().toString();
-
-            }*/
         }
 
 
@@ -290,47 +270,7 @@ public class profileActivity extends AppCompatActivity {
     }
 
 
-   /* //problem
-    private void saveInfo() {
-        String name = editText.getText().toString();
 
-
-        progressDialog.setMessage("Saving info..");
-        progressDialog.show();
-        if (name.isEmpty()) {
-            editText.setError("Name required");
-            editText.requestFocus();
-            return;
-        }
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user != null && profileImageUrl != null) {
-            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .setPhotoUri(Uri.parse(profileImageUrl))
-                    .build();
-            user.updateProfile(profile)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("success", "success");
-                                progressDialog.dismiss();
-                                Toast.makeText(profileActivity.this, "Profile info updated", Toast.LENGTH_LONG).show();
-
-                            }
-                            if (task.isCanceled()) {
-
-                                Toast.makeText(profileActivity.this, "Task canceled", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-        } else {
-            progressDialog.dismiss();
-            Toast.makeText(profileActivity.this, "Failed", Toast.LENGTH_LONG).show();
-        }
-    }
-*/
     //radi
     private void selectProfilePicture() {
 
@@ -351,39 +291,6 @@ public class profileActivity extends AppCompatActivity {
             pictureName = userID.toString();
             uploadImageToFirebase();
 
-            //uploadImageToFirebase();
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Please type in your nickname");
-            final EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-            builder.setView(input);
-
-
-
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    pictureName = input.getText().toString();
-                    preferences = getPreferences(getApplication().MODE_PRIVATE);
-                    editor = preferences.edit();
-                    editor.putString("pictureName", pictureName);
-                    editor.commit();
-
-                    Log.d("pictureName", pictureName);
-                    if(pictureName != "") {
-                        uploadImageToFirebase();
-                    }
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-
-            builder.show();*/
         }
 
 
@@ -443,20 +350,6 @@ public class profileActivity extends AppCompatActivity {
             }
 
     }
-/*
-
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-        //Log.d("resumeNoviUrl", noviUrl);
-        Glide.with(getApplicationContext())
-                .load()
-                .into(imageView);
-    }
-*/
-
 
 
 

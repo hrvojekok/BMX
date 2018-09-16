@@ -163,53 +163,6 @@ public class mapsActivity extends AppCompatActivity {
 
 
     }
-/*
-
-    private void showAllExistingUsers() {
-
-        webView.post(new Runnable() {
-            @Override
-            public void run() {
-
-
-                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-
-                ValueEventListener eventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                            final String latitude = ds.child("locationLongitude").getValue(String.class);
-                            final String longitude = ds.child("locationLatitude").getValue(String.class);
-
-                            webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
-                            Log.d("TAG", longitude + longitude);
-                            */
-/*webView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");
-                                }
-                            });*//*
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                };
-                rootRef.addListenerForSingleValueEvent(eventListener);
-
-
-               */
-/* databaseReference.child(userID).child("email").setValue(emailLogin);
-
-
-                webView.loadUrl("javascript:setMarker('" + latitude + "', '" + longitude + "')");*//*
-
-            }
-        });
-    }
-*/
 
 
 
