@@ -27,12 +27,21 @@
             android:textSize="40dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/profileButton"/>
+        <TextView
+            android:id="@+id/finfind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="search by location, username or by the type of riding"
+            android:textSize="20dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/findNewFriendsText"/>
         <EditText
             android:id="@+id/searchByUsername"
             android:layout_width="match_parent"
             android:layout_margin="15dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/findNewFriendsText"
+            android:layout_below="@+id/finfind"
             android:layout_centerHorizontal="true"
             android:hint="Search "/>
 

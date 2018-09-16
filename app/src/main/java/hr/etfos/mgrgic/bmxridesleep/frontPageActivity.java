@@ -57,12 +57,7 @@ public class frontPageActivity extends AppCompatActivity {
         editText = findViewById(R.id.searchByUsername);
         recyclerView = findViewById(R.id.recyclerView);
 
-       /* LinearLayoutManager manager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(searchAdapterAdapter);
-        */
 
         emailLogin = intent.getStringExtra("email");
 

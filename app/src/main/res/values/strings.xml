@@ -20,7 +20,7 @@
     <string name="nameLastName">Filip Žagar</string>
     <string name="locationText">Otok, Hrvatska</string>
     <string name="descriptionText">Hi, my name is Filip. I am from Otok. I ride street and I am familiar with spots in Otok, Privlaka and Vinkovci.</string>
-    <string name="findNewFriends">find new friends</string>
+    <string name="findNewFriends">find new riders</string>
     <string name="register">REGISTER</string>
     <string name="please_enter_a_desired_email_and_password_to_register_or_proceed_to_sign_in">Please enter a desired email and password to register, or proceed to sign in</string>
     <string name="log_in">LOG IN</string>
