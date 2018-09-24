@@ -2,13 +2,16 @@ package hr.etfos.mgrgic.bmxridesleep;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaActionSound;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -55,7 +58,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class profileActivity extends AppCompatActivity {
 
@@ -181,7 +188,8 @@ public class profileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                selectProfilePicture();
+                showPictureDialog();
+                //selectProfilePicture();
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -227,8 +235,149 @@ public class profileActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+    private int GALLERY = 1, CAMERA = 2;
+
+    private void showPictureDialog() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallery();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+    public void choosePhotoFromGallery() {
+
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+
     }
 
+    private void takePhotoFromCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA);
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                //Uri contentURI = data.getData();
+                /*
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    String path = saveImage(bitmap);
+                    Toast.makeText(profileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    imageView.setImageBitmap(bitmap);*/
+
+                imageURI = data.getData();
+                imageView.setImageURI(imageURI);
+                FirebaseUser user = firebaseAuthNick.getCurrentUser();
+                String userID = user.getUid();
+                //Toast.makeText(profileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                pictureName = userID.toString();
+                uploadImageToFirebase();
+            }
+
+        } else if (requestCode == CAMERA) {
+
+            // imageURI = data.getData();
+
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+
+
+            //imageURI = data.getData();
+
+
+            FirebaseUser user = firebaseAuthNick.getCurrentUser();
+            String userID = user.getUid();
+
+            pictureName = userID.toString();
+            //uploadImageToFirebase();
+            imageView.setImageBitmap(thumbnail);
+
+            //uploadIMageToFirebaseFromCamera();
+            //Toast.makeText(profileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+
+
+            progressDialog.setMessage("Uploading..");
+            progressDialog.show();
+
+
+            final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + userID + ".jpg");
+
+
+            imageView.setDrawingCacheEnabled(true);
+            imageView.buildDrawingCache();
+            Bitmap bitmap = imageView.getDrawingCache();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] dataToSend = baos.toByteArray();
+
+
+            UploadTask uploadTask = profilePictureReference.putBytes(dataToSend);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    //Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                    profileImageUrl = taskSnapshot.getUploadSessionUri().toString();
+                    profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("imageDownloadedUrl", uri.toString());
+                            noviUrl = uri.toString();
+                            Glide.with(getApplicationContext())
+                                    .load(noviUrl)
+                                    .into(imageView);
+                            progressDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(), "Image successfully uploaded", Toast.LENGTH_SHORT).show();
+                                        /*String imageName = preferences.getString("realImage", "");
+                                        Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();*/
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Log.d("imageFailed", "failed");
+                        }
+                    });
+                }
+            });
+
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////
     //loada u imageview dobro
     private void loadUserInfo() {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -267,22 +416,23 @@ public class profileActivity extends AppCompatActivity {
             });
         }
 
-    }
-
-
-
+    }/*
     //radi
     private void selectProfilePicture() {
 
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, PICK_IMAGE);
     }
-
     //radi
+
+
+
+*//*
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+    protected void onActivityResult(int rqstCode, int rsltCode, Intent data) {
+        super.onActivityResult(rqstCode, rsltCode, data);
+        if (rqstCode == PICK_IMAGE && rsltCode == RESULT_OK) {
             imageURI = data.getData();
             imageView.setImageURI(imageURI);
             FirebaseUser user = firebaseAuthNick.getCurrentUser();
@@ -295,10 +445,11 @@ public class profileActivity extends AppCompatActivity {
 
 
     }
+*/
 
 
     //radi
-    private void uploadImageToFirebase() {
+    private void uploadImageToFirebase(){
         progressDialog.setMessage("Uploading..");
         progressDialog.show();
 
@@ -348,9 +499,9 @@ public class profileActivity extends AppCompatActivity {
 
 
             }
+       // Toast.makeText(profileActivity.this, "Failed to upload", Toast.LENGTH_LONG).show();
 
     }
-
 
 
 
@@ -362,7 +513,6 @@ public class profileActivity extends AppCompatActivity {
             startActivity(new Intent(this, logInActivity.class));
 
         } else {
-
             FirebaseUser user = firebaseAuth.getCurrentUser();
             String userID = user.getUid();
 
