@@ -285,13 +285,6 @@ public class profileActivity extends AppCompatActivity {
         }
         if (requestCode == GALLERY) {
             if (data != null) {
-                //Uri contentURI = data.getData();
-                /*
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(profileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    imageView.setImageBitmap(bitmap);*/
-
                 imageURI = data.getData();
                 imageView.setImageURI(imageURI);
                 FirebaseUser user = firebaseAuthNick.getCurrentUser();
@@ -303,29 +296,14 @@ public class profileActivity extends AppCompatActivity {
 
         } else if (requestCode == CAMERA) {
 
-            // imageURI = data.getData();
-
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-
-
-            //imageURI = data.getData();
-
-
             FirebaseUser user = firebaseAuthNick.getCurrentUser();
             String userID = user.getUid();
 
             pictureName = userID.toString();
-            //uploadImageToFirebase();
             imageView.setImageBitmap(thumbnail);
-
-            //uploadIMageToFirebaseFromCamera();
-            //Toast.makeText(profileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-
-
             progressDialog.setMessage("Uploading..");
             progressDialog.show();
-
-
             final StorageReference profilePictureReference = FirebaseStorage.getInstance().getReference("profilepictures/" + userID + ".jpg");
 
 
@@ -346,9 +324,6 @@ public class profileActivity extends AppCompatActivity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    //Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
                     profileImageUrl = taskSnapshot.getUploadSessionUri().toString();
                     profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -358,11 +333,10 @@ public class profileActivity extends AppCompatActivity {
                             Glide.with(getApplicationContext())
                                     .load(noviUrl)
                                     .into(imageView);
-                            progressDialog.dismiss();
 
+                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Image successfully uploaded", Toast.LENGTH_SHORT).show();
-                                        /*String imageName = preferences.getString("realImage", "");
-                                        Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();*/
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -416,36 +390,9 @@ public class profileActivity extends AppCompatActivity {
             });
         }
 
-    }/*
-    //radi
-    private void selectProfilePicture() {
-
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, PICK_IMAGE);
     }
-    //radi
 
 
-
-*//*
-
-    @Override
-    protected void onActivityResult(int rqstCode, int rsltCode, Intent data) {
-        super.onActivityResult(rqstCode, rsltCode, data);
-        if (rqstCode == PICK_IMAGE && rsltCode == RESULT_OK) {
-            imageURI = data.getData();
-            imageView.setImageURI(imageURI);
-            FirebaseUser user = firebaseAuthNick.getCurrentUser();
-            String userID = user.getUid();
-
-            pictureName = userID.toString();
-            uploadImageToFirebase();
-
-        }
-
-
-    }
-*/
 
 
     //radi
@@ -478,8 +425,6 @@ public class profileActivity extends AppCompatActivity {
                                                 .load(noviUrl)
                                                 .into(imageView);
 
-                                        /*String imageName = preferences.getString("realImage", "");
-                                        Toast.makeText(getApplicationContext(), imageName, Toast.LENGTH_LONG).show();*/
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override

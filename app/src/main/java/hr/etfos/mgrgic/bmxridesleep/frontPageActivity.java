@@ -171,6 +171,20 @@ public class frontPageActivity extends AppCompatActivity {
                         emailList.add(email);
                         locationList.add(location);
                         counter++;
+                    } else if (email.toLowerCase().contains(searchedString.toLowerCase())){
+                        userNameList.add(userName);
+                        riderList.add(rider);
+                        ridingList.add(riding);
+                        emailList.add(email);
+                        locationList.add(location);
+                        counter++;
+                    } else if (location.toLowerCase().contains(searchedString.toLowerCase())){
+                        userNameList.add(userName);
+                        riderList.add(rider);
+                        ridingList.add(riding);
+                        emailList.add(email);
+                        locationList.add(location);
+                        counter++;
                     }
 
                     if(counter == 15){
