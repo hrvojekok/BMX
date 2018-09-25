@@ -67,9 +67,9 @@ public class frontPageActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerView.setHasFixedSize(true);
 
         userNameList = new ArrayList<>();
         riderList = new ArrayList<>();
@@ -145,40 +145,41 @@ public class frontPageActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     String userID = snapshot.getKey();
                     String userName = (String) snapshot.child("nickname").getValue();
+                    //Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
                     String rider = (String) snapshot.child("rider").getValue();
                     String riding = (String) snapshot.child("riding").getValue();
                     String email = (String) snapshot.child("email").getValue();
                     String location = (String) snapshot.child("city").getValue();
 
-                    if(userName.toLowerCase().contains(searchedString.toLowerCase())){
+                    if(userName != null && userName.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
                         locationList.add(location);
                         counter++;
-                    }else if (rider.toLowerCase().contains(searchedString.toLowerCase())){
+                    }else if (rider != null && rider.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
                         locationList.add(location);
                         counter++;
-                    } else if (riding.toLowerCase().contains(searchedString.toLowerCase())){
+                    } else if (riding != null && riding.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
                         locationList.add(location);
                         counter++;
-                    } else if (email.toLowerCase().contains(searchedString.toLowerCase())){
+                    } else if (email != null && email.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
                         emailList.add(email);
                         locationList.add(location);
                         counter++;
-                    } else if (location.toLowerCase().contains(searchedString.toLowerCase())){
+                    } else if (location != null && location.toLowerCase().contains(searchedString.toLowerCase())){
                         userNameList.add(userName);
                         riderList.add(rider);
                         ridingList.add(riding);
