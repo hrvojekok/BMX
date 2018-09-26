@@ -75,46 +75,9 @@ public class sendMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 input = findViewById(R.id.inputEditText);
-                //String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                //Log.d("sender", sender);
-                /*
-                String receiver = ChatMessage.messageReceiver;
-                Log.d("receiver", receiver);*/
-/*
-                sender = sender.replaceAll("@", "").replaceAll(".","");
 
-                Log.d("sender", sender);*/
-/*
-
-                StringBuilder stringBuilder = new StringBuilder(email);
-                stringBuilder.deleteCharAt(11);
-                String resultString = stringBuilder.toString();
-                Log.d("resultString", resultString);
-*/
-
-
-                //sender.replaceAll("@", "");
-                //StringUtils.remove(email, "@");
-
-                /*StringUtils.remove(sender, "@");
-                Log.d("sender2", sender.replaceAll("@", ""));*/
-                //Log.d("email2", email);
-
-
-/*
-
-                String receiver = String.valueOf(FirebaseDatabase.getInstance().getReference().getParent());
-
-                Log.d("receiver", receiver);
-                Log.d("sender", sender);
-
-
-*/
-
-                Intent intent2 = getIntent();
 
                 DataSnapshot dataSnapshot = null;
-                //dataSnapshot.getChildren();
 
                 String userName = null;
                 if (dataSnapshot != null) {
@@ -129,13 +92,6 @@ public class sendMessageActivity extends AppCompatActivity {
                         FirebaseAuth.getInstance().getCurrentUser().getEmail()));
                 FirebaseDatabase.getInstance().getReference().child("messages").child(valueOf(email)).child(valueOf(nicknameIs)).push().setValue(new ChatMessage(input.getText().toString(),
                         FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-
-/*
-
-
-                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(input.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-                input.setText("");
-*/
 
                 input.setText("");
 
@@ -164,30 +120,8 @@ public class sendMessageActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String nicknameIs = prefs.getString("nickname", "nickname"); //no id: default value
 
-
-        /*
-        DataSnapshot snapshot: dataSnapshot.getChildren();
-
-        String userName = (String) dataSnapshot.child("nickname").getValue();*/
-
         ListView listViewMessages = findViewById(R.id.messageList);
-        /*adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.list_tem,
-                FirebaseDatabase.getInstance().getReference().child("messages")) {
-            @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-                TextView messageText, messageUser, messageTime;
 
-                messageText = v.findViewById(R.id.message_text);
-                messageUser = v.findViewById(R.id.message_user);
-                messageTime = v.findViewById(R.id.message_time);
-
-
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-                messageTime.setText(DateFormat.format("dd--MM--yyyy (HH:mm:ss)", model.getMessageTime()));
-
-            }
-        };*/
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.list_tem,
                 FirebaseDatabase.getInstance().getReference().child("messages").child(valueOf(nicknameIs)).child(valueOf(email))) {
             @Override

@@ -102,8 +102,6 @@ public class profileActivity extends AppCompatActivity {
     String value = "";
     String noviUrl;
 
-
-
     private FirebaseDatabase firebaseDatabaseNick;
     private FirebaseAuth firebaseAuthNick;
     private FirebaseAuth.AuthStateListener authStateListenerNick;
@@ -364,20 +362,13 @@ public class profileActivity extends AppCompatActivity {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
         //String photoUrl = userInfo.getPhotoUrl().toString();
 
-
         if (user != null) {
-            //Log.d("imageFromFirebaseTime", user.getPhotoUrl().toString());
-
-
             if (noviUrl != null) {
                 Glide.with(this)
                         .load(noviUrl)
                         .into(imageView);
             }
-
-
         }
-
 
         if (user.isEmailVerified()) {
             textView.setText("Email is verified");

@@ -80,7 +80,6 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
 
                 String email = userNameList.get(position);
 
-
                 intent.putExtra("email", email);
                 //Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
 
