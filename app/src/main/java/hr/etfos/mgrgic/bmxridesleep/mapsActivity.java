@@ -1,25 +1,15 @@
 package hr.etfos.mgrgic.bmxridesleep;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import static android.app.PendingIntent.getActivity;
-import static java.security.AccessController.getContext;
 
 public class mapsActivity extends AppCompatActivity {
 
@@ -44,6 +31,7 @@ public class mapsActivity extends AppCompatActivity {
     WebView webView;
     Button button;
     Button button2;
+    Button button3;
     TextView textView;
 
     private String fileName = "map.html";
@@ -52,6 +40,8 @@ public class mapsActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceLatitude;
+    private DatabaseReference databaseReferenceLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +52,7 @@ public class mapsActivity extends AppCompatActivity {
         textView = findViewById(R.id.textViewLocation);
         button = findViewById(R.id.getMyLocation);
         button2 = findViewById(R.id.confirmButton);
+        button3 = findViewById(R.id.putAllUsersToMap);
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/" + fileName);
@@ -87,8 +78,6 @@ public class mapsActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 Object value = dataSnapshot.getValue();
                 Log.d("value", "Value is: " + value);
             }
@@ -115,7 +104,7 @@ public class mapsActivity extends AppCompatActivity {
 
 
 
-                    textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
+                    //textView.setText("Latitude is: " + latitude + ", Longitude is: " + longitude);
                     webView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -159,8 +148,43 @@ public class mapsActivity extends AppCompatActivity {
                 }
             }
         });
+/*
+        databaseReferenceLatitude = firebaseDatabase.getReference().child("userInfo").child.child("locationLatitude");
+        Log.d("databaseReferenc1", databaseReferenceLatitude.toString());
+        databaseReferenceLongitude = firebaseDatabase.getReference().child("userInfo").child("locationLongitude");
 
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReferenceLatitude.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            Log.d("dataSnapshot1", dataSnapshot1.toString());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                databaseReferenceLongitude.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
+                            Log.d("dataSnapshot2", dataSnapshot2.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });*/
 
     }
 
