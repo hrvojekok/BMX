@@ -134,7 +134,7 @@ public class profileActivity extends AppCompatActivity {
 
         firebaseAuthNick = FirebaseAuth.getInstance();
         firebaseDatabaseNick = FirebaseDatabase.getInstance();
-        databaseReferenceNick = firebaseDatabaseNick.getReference();
+        databaseReferenceNick = firebaseDatabaseNick.getReference().child("userInfo");
 
 
         databaseReferenceNick.addListenerForSingleValueEvent(new ValueEventListener() {

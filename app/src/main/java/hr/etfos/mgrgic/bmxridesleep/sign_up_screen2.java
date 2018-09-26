@@ -51,7 +51,7 @@ public class sign_up_screen2 extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        databaseReference = firebaseDatabase.getReference().child("userInfo");
 
         editText1 = findViewById(R.id.chooseCity);
         editText2 = findViewById(R.id.editTextFamiliar);

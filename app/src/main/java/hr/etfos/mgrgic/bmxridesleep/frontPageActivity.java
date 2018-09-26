@@ -81,7 +81,7 @@ public class frontPageActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        databaseReference = firebaseDatabase.getReference().child("userInfo");
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String userID = user.getUid();

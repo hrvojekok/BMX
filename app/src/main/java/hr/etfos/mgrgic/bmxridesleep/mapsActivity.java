@@ -69,7 +69,7 @@ public class mapsActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        databaseReference = firebaseDatabase.getReference().child("userInfo");
 
         authStateListener = new FirebaseAuth.AuthStateListener(){
             @Override
