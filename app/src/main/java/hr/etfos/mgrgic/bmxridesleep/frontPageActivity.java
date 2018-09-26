@@ -93,6 +93,7 @@ public class frontPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(frontPageActivity.this, profileActivity.class);
+                intent.putExtra("email", emailLogin);
                 startActivity(intent);
             }
         });

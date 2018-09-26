@@ -78,7 +78,8 @@ public class searchAdapter extends RecyclerView.Adapter<searchAdapter.SearchView
                 //Intent intent = new Intent(context, sendEmailActivity.class);
                 Intent intent = new Intent(context, sendMessageActivity.class);
 
-                String email = emailList.get(position);
+                String email = userNameList.get(position);
+
 
                 intent.putExtra("email", email);
                 //Toast.makeText(context, email, Toast.LENGTH_SHORT).show();

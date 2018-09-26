@@ -127,7 +127,7 @@ public class profileActivity extends AppCompatActivity {
         button2 = findViewById(R.id.maps);
 
         progressDialog = new ProgressDialog(this);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Intent intentProfile = getIntent();
 
 
@@ -199,7 +199,14 @@ public class profileActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuthNick.getCurrentUser();
                 String userID = user.getUid();
 
+
                 String nickname = editText.getText().toString();
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("nickname", nickname); //InputString: from the EditText
+                editor.apply();
+
                 if(!nickname.isEmpty()){
                     databaseReferenceNick.child(userID).child("nickname").setValue(nickname);
 

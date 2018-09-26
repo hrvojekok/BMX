@@ -3,15 +3,13 @@ package hr.etfos.mgrgic.bmxridesleep;
 import java.util.Date;
 
 public class ChatMessage {
-    private String messageText;
-    private String messageUser;
-    private String messageReceiver;
-    private long messageTime;
+    static String messageText;
+    static String messageUser;
+    long messageTime;
 
     public ChatMessage(String messageText, String messageUser){
         this.messageText = messageText;
         this.messageUser = messageUser;
-        this.messageReceiver = messageReceiver;
         messageTime = new Date().getTime();
 
     }
@@ -44,12 +42,5 @@ public class ChatMessage {
         this.messageTime = messageTime;
     }
 
-    public String getMessageReceiver() {
-        return messageReceiver;
-    }
-
-    public void setMessageReceiver(String messageReceiver) {
-        this.messageReceiver = messageReceiver;
-    }
 
 }
